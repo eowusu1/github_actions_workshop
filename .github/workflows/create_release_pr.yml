@@ -1,0 +1,21 @@
+name: Create Pull Request for Release Branch
+
+on:
+    push:
+        branches:
+        - release/* #looks for branch beginnign with "release" (reg ex)
+    workflow_dispatch:
+
+jobs:
+    create_pr:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@v3
+              with: # with option - way to pass arguments to pre-action, like passing arguments to py/R
+                fetch-depth: 0 
+            - name: Create Pull Request #pointin to live branch (not develop branch)
+              run:
+                gh pr create --fill --draft --base live # github actions
+              env: # intitialse and interact with this
+                GH_TOKEN: ${{ github.token }}
